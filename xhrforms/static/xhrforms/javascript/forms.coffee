@@ -68,36 +68,36 @@ $ ->
           headers: {'X-CSRFToken': $form.find('[name=csrfmiddlewaretoken]').val()}
         xhr.always ->
           if xhr.status == 200
-            $control = $field.closest('.control-group')
-            $control.addClass 'success'
-            $control.find('.help-inline:not(.error)').show()
-            $control.find('.help-inline.error').remove()
+            $control = $field.closest('.form-group')
+            $control.addClass 'has-success'
+            $control.find('.help-block:not(.has-error)').show()
+            $control.find('.help-block.has-error').remove()
           else
-            $field.closest('.control-group').removeClass 'success'
+            $field.closest('.form-group').removeClass 'has-success'
             displayFormErrors $form, JSON.parse(xhr.responseText).errors, false
 
 displayFormErrors = ($form, errors, remove)->
   $form.find('.alert-error').remove()
   if errors.hasOwnProperty '__all__'
-    $form.find('.control-group').first().before "<div class='alert alert-error'>#{errors.__all__}</div>"
+    $form.find('.form-group').first().before "<div class='alert alert-error'>#{errors.__all__}</div>"
 
   for field in $form.find('[name]')
-    $control = $(field).closest('.control-group')
-    $control.removeClass 'error'
-    $control.find('.help-inline:not(.error)').show()
-    $control.find('.help-inline.error').remove()
+    $control = $(field).closest('.form-group')
+    $control.removeClass 'has-error'
+    $control.find('.help-block:not(.has-error)').show()
+    $control.find('.help-block.has-error').remove()
 
   for field in $form.find('[name]')
     $field = $(field)
     name = $field.attr 'name'
-    $control = $field.closest('.control-group')
+    $control = $field.closest('.form-group')
 
     if errors.hasOwnProperty name
-      $control.removeClass 'success'
-      $control.addClass 'error'
-      $field.removeClass 'success'
-      $field.addClass 'error'
-      $control.find('.help-inline:not(.error)').hide()
-      $control.append "<span class='help-inline error alert alert-error'>#{errors[name]}</span>"
+      $control.removeClass 'has-success'
+      $control.addClass 'has-error'
+      $field.removeClass 'has-success'
+      $field.addClass 'has-error'
+      $control.find('.help-block:not(.has-error)').hide()
+      $control.children('div').append "<span class='help-block has-error'>#{errors[name]}</span>"
 
   $form.find('[type=submit],input.submit').prop 'disabled', false
